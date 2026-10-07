@@ -1,4 +1,6 @@
 
+using ComputerShopAPI.Models;
+
 namespace ComputerShopAPI
 {
     public class Program
@@ -6,6 +8,8 @@ namespace ComputerShopAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<CmpShopDbContext>();
 
             // Add services to the container.
 
