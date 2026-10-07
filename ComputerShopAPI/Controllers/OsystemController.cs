@@ -12,14 +12,14 @@ namespace ComputerShopAPI.Controllers
         [HttpGet("getAll")]
         public object GetAllOsystem()
         {
-            var osystems = context.Osystems.ToList();
-            return new { message = "Sikeres lekérdezés", result = osystems };
+            var osystem = context.Osystems.ToList();
+            return new { message = "Sikeres lekérdezés", result = osystem };
         }
 
         [HttpPost]
         public object AddNewOsystem(AddNewOsystemDTO addNewOsystemDTO)
         {
-            var osystems = new Osystem
+            var osystem = new Osystem
             {
                 Id = Guid.NewGuid(),
                 Name = addNewOsystemDTO.Name,
@@ -27,9 +27,9 @@ namespace ComputerShopAPI.Controllers
                 RegisterTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };
-            context.Osystems.Add(osystems);
+            context.Osystems.Add(osystem);
             context.SaveChanges();
-            return new { message = "Sikeres lekérdezés", result = osystems };
+            return StatusCode(201, new { message = "Sikeres felvétel", result = osystem });
         }
     }
 }
