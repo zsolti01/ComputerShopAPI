@@ -8,7 +8,7 @@ namespace ComputerShopAPI.Models
         {
         }
 
-        protected CmpShopDbContext()
+        public CmpShopDbContext()
         {
         }
 

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerShopAPI.Migrations
 {
     [DbContext(typeof(CmpShopDbContext))]
-    [Migration("20261007070624_InitialDb")]
-    partial class InitialDb
+    [Migration("20261007072217_InitialDbGuidMaxLength2")]
+    partial class InitialDbGuidMaxLength2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,8 +24,10 @@ namespace ComputerShopAPI.Migrations
 
             modelBuilder.Entity("ComputerShopAPI.Models.Osystem", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()

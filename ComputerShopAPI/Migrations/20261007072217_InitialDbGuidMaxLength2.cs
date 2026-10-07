@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ComputerShopAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialDbGuidMaxLength2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace ComputerShopAPI.Migrations
                 name: "Osystems",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Id = table.Column<Guid>(type: "char(36)", maxLength: 36, nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Version = table.Column<int>(type: "int", nullable: false),
                     RegisterTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),

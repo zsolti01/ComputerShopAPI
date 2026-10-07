@@ -21,8 +21,10 @@ namespace ComputerShopAPI.Migrations
 
             modelBuilder.Entity("ComputerShopAPI.Models.Osystem", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
