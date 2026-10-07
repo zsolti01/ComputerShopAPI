@@ -31,5 +31,21 @@ namespace ComputerShopAPI.Controllers
             context.SaveChanges();
             return StatusCode(201, new { message = "Sikeres felvétel", result = osystem });
         }
+
+        [HttpPut]
+        public object UpdateOsystem([FromQuery]Guid id, [FromBody]UpdateOsystemDTO updateOsystemDTO)
+        {
+            var osystem = context.Osystems.FirstOrDefault(osystem => osystem.Id == id);
+            if (osystem != null)
+            {
+                osystem.Name = updateOsystemDTO.Name;
+                osystem.Version = updateOsystemDTO.Version;
+                osystem.UpdateTime = DateTime.Now;
+                context.Osystems.Update(osystem);
+                context.SaveChanges();
+                return StatusCode(200, new { message = "Sikeres frissítés", result = osystem });
+            }
+            return StatusCode(404, new { message = "Sikertelen frissítés", result = osystem });
+        }
     }
 }
