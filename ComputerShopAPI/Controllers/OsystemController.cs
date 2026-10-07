@@ -47,5 +47,18 @@ namespace ComputerShopAPI.Controllers
             }
             return StatusCode(404, new { message = "Sikertelen frissítés", result = osystem });
         }
+
+        [HttpDelete]
+        public object DeleteOsystem([FromQuery]Guid id)
+        {
+            var osystem = context.Osystems.Find(id);
+            if (osystem != null)
+            {
+                context.Osystems.Remove(osystem);
+                context.SaveChanges();
+                return StatusCode(204, new { message = "Sikeres törlés"});
+            }
+            return StatusCode(404, new { message = "Sikertelen törlés"});
+        }
     }
 }
