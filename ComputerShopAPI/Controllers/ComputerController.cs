@@ -88,5 +88,24 @@ namespace ComputerShopAPI.Controllers
             if (computers.Count > 0) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
             else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
         }
+
+        // 2.
+        [HttpGet("allCompsAndOsystems")]
+        public object AllCompsAndOsystems()
+        {
+            var computers = context.Osystems.Include(o => o.Computers).Select(o => new { o.Name, o.Version, o.Computers });
+            var cmp = context.Osystems.Join(context.Computers, o => o.Id, c => c.Osys, (o, c) => new { o.Name, o.Version, c.Brand, c.Type });
+            if (computers != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
+            else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
+        }
+
+        // 3.
+        [HttpGet("oneOsystemAndComputers")]
+        public object OneOsystemAndComputers([FromQuery]Guid id)
+        {
+            var computers = context.Osystems.Where(o => o.Id == id).Join(context.Computers, o => o.Id, c => c.Osys, (o, c) => new { o.Name, c });
+            if (computers != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
+            else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
+        }
     }
 }
