@@ -19,6 +19,6 @@ namespace ComputerShopAPI.Models
         public double Display { get; set; }
         public int Memory { get; set; }
         public DateTime CreatedTime { get; set; }
-        public Guid OsId { get; set; }
+        public Osystem Osys { get; set; }
     }
 }
