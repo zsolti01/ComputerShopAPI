@@ -1,6 +1,8 @@
 ﻿using ComputerShopAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 
 namespace ComputerShopAPI.Controllers
 {
@@ -16,8 +18,19 @@ namespace ComputerShopAPI.Controllers
             return new { message = "Sikeres lekérdezés", result = computer };
         }
 
+        [HttpGet("byId")]
+        public object GetById([FromQuery]Guid Id)
+        {
+            var computer = context.Computers.SingleOrDefault(x => x.Id == Id);
+            if (computer != null)
+            {
+                return StatusCode(200, new { message = "Sikeres lekérdezés", result = computer });
+            }
+            else return StatusCode(404, new { message = "Nincs ilyen Id", result = computer });
+        }
+
         [HttpPost]
-        public object AddNewComputer(AddNewComputerDTO addNewComputerDTO)
+        public object AddNewComputer([FromBody]AddNewComputerDTO addNewComputerDTO)
         {
             var computer = new Computer
             {
@@ -28,21 +41,25 @@ namespace ComputerShopAPI.Controllers
                 Memory = addNewComputerDTO.Memory,
                 CreatedTime = DateTime.Now
             };
-            context.Computers.Add(computer);
-            context.SaveChanges();
-            return StatusCode(201, new { message = "Sikeres felvétel", result = computer });
+            if (computer != null)
+            {
+                context.Computers.Add(computer);
+                context.SaveChanges();
+                return StatusCode(201, new { message = "Sikeres felvétel", result = computer });
+            }
+            else return StatusCode(404, new { message = "Sikertelen felvétel", result = computer });
         }
 
         [HttpPut]
-        public object UpdateBlogger([FromQuery]Guid Id, [FromBody]AddNewComputerDTO addNewComputerDTO)
+        public object UpdateBlogger([FromQuery]Guid Id, [FromBody]UpdateComputerDTO updateComputerDTO)
         {
             var computer = context.Computers.FirstOrDefault(computer => computer.Id == Id);
             if (computer != null)
             {
-                computer.Brand = addNewComputerDTO.Brand;
-                computer.Type = addNewComputerDTO.Type;
-                computer.Display = addNewComputerDTO.Display;
-                computer.Memory = addNewComputerDTO.Memory;
+                computer.Brand = updateComputerDTO.Brand;
+                computer.Type = updateComputerDTO.Type;
+                computer.Display = updateComputerDTO.Display;
+                computer.Memory = updateComputerDTO.Memory;
                 context.Computers.Update(computer);
                 context.SaveChanges();
                 return StatusCode(200, new { message = "Sikeres frisssítés", result = computer });
@@ -61,6 +78,15 @@ namespace ComputerShopAPI.Controllers
                 return StatusCode(204, new { message = "Sikeres törlés" });
             }
             else return StatusCode(404, new { message = "Sikertelen törlés" });
+        }
+
+        // 1.
+        [HttpGet("allOsystemsAndComps")]
+        public object AllOsystemsAndComps()
+        {
+            var computers = context.Osystems.Include(o => o.Computers).ToList();
+            if (computers.Count > 0) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
+            else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
         }
     }
 }
