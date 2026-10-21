@@ -74,6 +74,22 @@
   },
   {
     "ContainingType": "ComputerShopAPI.Controllers.ComputerController",
+    "Method": "GetComputersByBrand",
+    "RelativePath": "api/Computer/brand/{brand}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "brand",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ComputerShopAPI.Controllers.ComputerController",
     "Method": "GetById",
     "RelativePath": "api/Computer/byId",
     "HttpMethod": "GET",
@@ -92,6 +108,16 @@
     "ContainingType": "ComputerShopAPI.Controllers.ComputerController",
     "Method": "getAllComputers",
     "RelativePath": "api/Computer/getAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ComputerShopAPI.Controllers.ComputerController",
+    "Method": "NumberOfComps",
+    "RelativePath": "api/Computer/numberOfComps",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
