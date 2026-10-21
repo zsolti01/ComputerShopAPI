@@ -93,8 +93,7 @@ namespace ComputerShopAPI.Controllers
         [HttpGet("allCompsAndOsystems")]
         public object AllCompsAndOsystems()
         {
-            var computers = context.Osystems.Include(o => o.Computers).Select(o => new { o.Name, o.Version, o.Computers });
-            var cmp = context.Osystems.Join(context.Computers, o => o.Id, c => c.Osys, (o, c) => new { o.Name, o.Version, c.Brand, c.Type });
+            var computers = context.Osystems.Select(o => new{o.Name, o.Version, o.Computers});
             if (computers != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
             else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
         }
@@ -103,8 +102,27 @@ namespace ComputerShopAPI.Controllers
         [HttpGet("oneOsystemAndComputers")]
         public object OneOsystemAndComputers([FromQuery]Guid id)
         {
-            var computers = context.Osystems.Where(o => o.Id == id).Join(context.Computers, o => o.Id, c => c.Osys, (o, c) => new { o.Name, c });
+            var computers = context.Osystems.Include(o => o.Computers).Where(o => o.Id == id).Select(o => new { o.Name, Computers = o.Computers }).FirstOrDefault();
             if (computers != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
+            else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
+        }
+
+        // 4.
+        [HttpGet("oneCompOneOsys")]
+        public object OneCompOneOsys([FromQuery]Guid id)
+        {
+            var computers = context.Computers.Select(c => new{c.Brand,c.Type,});
+
+            if (computers != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = computers });
+            else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
+        }
+
+        // 5.
+        [HttpGet("numberOfComps")]
+        public object NumberOfComps()
+        {
+            var osystems = context.Osystems.Select(o => new{ OpNev = o.Name, Darab = o.Computers.Count() });
+            if (osystems != null) return StatusCode(200, new { message = "Sikeres lekérdezés", result = osystems });
             else return StatusCode(404, new { message = "Sikertelen lekérdezés" });
         }
     }
